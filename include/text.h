@@ -8,8 +8,8 @@ typedef struct {
     char* text;
     int16_t x, y;
     uint8_t fontSize;
-} Text;
+} CPG_Text;
 
-void Text_Draw(Text* text, SDL_Renderer* renderer);
+void CPG_Text_Draw(CPG_Text* text, SDL_Renderer* renderer);
 
 #endif // TEXT_H

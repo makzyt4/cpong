@@ -1,7 +1,7 @@
 #include "../include/text.h"
 #include "../include/font.h"
 
-void Text_DrawCharacter(
+void CPG_Text_DrawCharacter(
         SDL_Renderer* renderer,
         char c,
         int16_t x, int16_t y,
@@ -28,7 +28,7 @@ void Text_DrawCharacter(
     }
 }
 
-void Text_Draw(Text* text, SDL_Renderer* renderer) {
+void CPG_Text_Draw(CPG_Text* text, SDL_Renderer* renderer) {
     char* c = text->text;
     int16_t x = text->x;
     int16_t y = text->y;
@@ -43,7 +43,7 @@ void Text_Draw(Text* text, SDL_Renderer* renderer) {
                 x += text->fontSize * 32;
                 break;
             default:
-                Text_DrawCharacter(renderer, *c, x, y, text->fontSize);
+                CPG_Text_DrawCharacter(renderer, *c, x, y, text->fontSize);
                 x += 8 * text->fontSize;
         }
 

@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Werror
+CFLAGS=-Wall -Werror -pedantic
 TARGET=bin/cpong
 SOURCES=$(wildcard src/*.c)
 LDFLAGS=-lSDL2

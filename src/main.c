@@ -1,44 +1,28 @@
 #include <SDL2/SDL.h>
+#include "../include/display.h"
 #include "../include/text.h"
 
 int main() {
-    SDL_Window* window = NULL;
-    SDL_Renderer* renderer = NULL;
-
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-        fprintf(stderr, "SDL video init failed: %s\n", SDL_GetError());
-        return 1;
-    }
-
-    window = SDL_CreateWindow(
-            "Test", 
-            SDL_WINDOWPOS_CENTERED,
-            SDL_WINDOWPOS_CENTERED,
-            800,
-            600,
-            SDL_WINDOW_SHOWN);
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-    Text t = {"Testing...", 50, 50, 1};
+    CPG_Display* display = CPG_Display_CreateNew(800, 600, "Test");
+    CPG_Text t = {"Testing...", 50, 50, 1};
+    CPG_Color white = {255, 255, 255, 255};
+    CPG_Color blue = {0, 0, 255, 255};
 
     while (SDL_TRUE) {
         SDL_Event event;
 
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
-                SDL_DestroyRenderer(renderer);
-                SDL_DestroyWindow(window);
                 SDL_Quit();
                 return 0;
             }
         }
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-        SDL_RenderClear(renderer);
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        Text_Draw(&t, renderer);
+        CPG_Display_Clear(display, white);
+        CPG_Display_ChangeRenderColor(display, blue);
+        CPG_Display_DrawText(display, &t, 1);
 
-        SDL_RenderPresent(renderer);
+        CPG_Display_Refresh(display);
         SDL_Delay(16);
     }
     return 0;
