@@ -16,12 +16,14 @@ void Text_DrawCharacter(
 
     for (i = 0; i < 8; i++) {
         for (j = 0; j < 8; j++) {
-            SDL_Rect r = {
-                x + i * fontSize,
-                y + j * fontSize,
-                fontSize, fontSize
-            };
-            SDL_RenderFillRect(renderer, &r);
+            if (ch & (1LL << ((7 - j) + 8 * (7 - i)))) {
+                SDL_Rect r = {
+                    x + i * fontSize,
+                    y + j * fontSize,
+                    fontSize, fontSize
+                };
+                SDL_RenderFillRect(renderer, &r);
+            }
         }
     }
 }
