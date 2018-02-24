@@ -1,29 +1,18 @@
 #include <SDL2/SDL.h>
 #include "../include/display.h"
 #include "../include/text.h"
+#include "../include/main_screen.h"
 
 int main() {
-    CPG_Display* display = CPG_Display_CreateNew(800, 600, "Test");
-    CPG_Text t = {"Testing...", 50, 50, 1};
-    CPG_Color white = {255, 255, 255, 255};
-    CPG_Color blue = {0, 0, 255, 255};
+    CPG_Display* display = CPG_Display_Init(800, 600, "Test");
+    CPG_Screen* screen = CPG_MainScreen_Init(display);
 
-    while (SDL_TRUE) {
-        SDL_Event event;
-
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                SDL_Quit();
-                return 0;
-            }
-        }
-
-        CPG_Display_Clear(display, white);
-        CPG_Display_ChangeRenderColor(display, blue);
-        CPG_Display_DrawText(display, &t, 1);
-
-        CPG_Display_Refresh(display);
-        SDL_Delay(16);
+    while (screen->code != CPG_QUIT) {
+        CPG_Screen_RunLoop(screen);
     }
+
+    free(screen);
+    CPG_Display_Destroy(display);
+
     return 0;
 }

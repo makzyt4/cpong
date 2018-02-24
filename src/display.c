@@ -10,7 +10,7 @@ void CPG_Display_Clear(CPG_Display* self, CPG_Color color) {
     SDL_RenderClear(self->renderer);
 }
 
-void CPG_Display_ChangeRenderColor(CPG_Display* self, CPG_Color color) {
+void CPG_Display_SetColor(CPG_Display* self, CPG_Color color) {
     uint8_t r = color.r;
     uint8_t g = color.g;
     uint8_t b = color.b;
@@ -19,7 +19,7 @@ void CPG_Display_ChangeRenderColor(CPG_Display* self, CPG_Color color) {
     SDL_SetRenderDrawColor(self->renderer, r, g, b, a);
 }
 
-CPG_Display* CPG_Display_CreateNew(int width, int height, char* title) {
+CPG_Display* CPG_Display_Init(int width, int height, char* title) {
     CPG_Display* display = (CPG_Display*) malloc(sizeof(CPG_Display));
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {

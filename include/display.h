@@ -11,9 +11,9 @@ typedef struct {
    SDL_Renderer* renderer;
 } CPG_Display;
 
-void CPG_Display_ChangeRenderColor(CPG_Display* self, CPG_Color color);
+void CPG_Display_SetColor(CPG_Display* self, CPG_Color color);
 void CPG_Display_Clear(CPG_Display* self, CPG_Color color);
-CPG_Display* CPG_Display_CreateNew(int width, int height, char* title);
+CPG_Display* CPG_Display_Init(int width, int height, char* title);
 void CPG_Display_Destroy(CPG_Display* self);
 void CPG_Display_DrawRect(
         CPG_Display* self,

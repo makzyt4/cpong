@@ -1,6 +1,6 @@
 #include "../include/screen.h"
 
-CPG_Screen* CPG_Screen_CreateNew(
+CPG_Screen* CPG_Screen_Init(
         CPG_Display* display, 
         void (*loop)(CPG_Screen*)) {
 
