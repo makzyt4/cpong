@@ -6,7 +6,7 @@
 
 int8_t selectionIndex = 0;
 
-void loop(CPG_Screen* screen) {
+void CPG_MainScreen_Loop(CPG_Screen* screen) {
     CPG_Text menus[] = {
         (CPG_Text){
             "New game", 
@@ -47,8 +47,13 @@ void loop(CPG_Screen* screen) {
                         }
                         break;
                     case SDLK_RETURN:
-                        if (selectionIndex == MENUS_SIZE - 1) {
-                            screen->code = CPG_QUIT;
+                        switch (selectionIndex) {
+                            case 0:
+                                screen->code = CPG_GAME;
+                                break;
+                            case 2:
+                                screen->code = CPG_QUIT;
+                                break;
                         }
                 }
                 break;
@@ -72,5 +77,5 @@ void loop(CPG_Screen* screen) {
 }
 
 CPG_Screen* CPG_MainScreen_Init(CPG_Display* display) {
-    return CPG_Screen_Init(display, loop);
+    return CPG_Screen_Init(display, CPG_MainScreen_Loop);
 }

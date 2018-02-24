@@ -39,8 +39,8 @@ void CPG_Display_Destroy(CPG_Display* self) {
     free(self);
 }
 
-void CPG_Display_DrawRect(CPG_Display* self, SDL_Rect rect) {
-    SDL_RenderFillRect(self->renderer, &rect);
+void CPG_Display_DrawRect(CPG_Display* self, SDL_Rect* rect) {
+    SDL_RenderFillRect(self->renderer, rect);
 }
 
 void CPG_Display_DrawText(CPG_Display* self, CPG_Text* text) {

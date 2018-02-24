@@ -1,4 +1,5 @@
 #include "../include/screen.h"
+#include "../include/game_screen.h"
 
 CPG_Screen* CPG_Screen_Init(
         CPG_Display* display, 
@@ -19,10 +20,10 @@ void CPG_Screen_Update(CPG_Screen* self) {
 }
 
 void CPG_Screen_HandleExitCode(CPG_Screen* self) {
-    switch (self->code) {
-        // TODO Exit code handling
-        default:
-            break;
+    if (self->code == CPG_GAME) {
+        CPG_Screen* newScreen = CPG_GameScreen_Init(self->display);
+        self->loop = newScreen->loop;
+        self->code = CPG_LOOP;
     }
 }
 

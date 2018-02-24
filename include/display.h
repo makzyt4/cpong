@@ -18,7 +18,7 @@ typedef struct {
 CPG_Display* CPG_Display_Init(int width, int height, char* title);
 void CPG_Display_Clear(CPG_Display* self, CPG_Color color);
 void CPG_Display_Destroy(CPG_Display* self);
-void CPG_Display_DrawRect(CPG_Display* self, SDL_Rect rect);
+void CPG_Display_DrawRect(CPG_Display* self, SDL_Rect* rect);
 void CPG_Display_DrawText(CPG_Display* self, CPG_Text* text);
 void CPG_Display_Refresh(CPG_Display* self);
 void CPG_Display_SetColor(CPG_Display* self, CPG_Color color);
