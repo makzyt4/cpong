@@ -48,7 +48,7 @@ const uint64_t ascii_font[] = {
     0x00fefe0202020200LL, // L 0x4c
     0xfefe603060fefe00LL, // M 0x4d
     0xfefe603018fefe00LL, // N 0x4e
-    0x007cfe8282fe7c00LL, // O 0x4f
+    0x7cfe8282fe7c0000LL, // O 0x4f
     0x00fefe9090f06000LL, // P 0x50
     0x7cfe8286fe7e0200LL, // Q 0x51
     0x00fefe9098fe6600LL, // R 0x52

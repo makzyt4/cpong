@@ -4,7 +4,10 @@
 #include "../include/main_screen.h"
 
 int main() {
-    CPG_Display* display = CPG_Display_Init(800, 600, "Test");
+    CPG_Display* display = CPG_Display_Init(
+            CPG_SCREEN_WIDTH, 
+            CPG_SCREEN_HEIGHT, 
+            CPG_SCREEN_TITLE);
     CPG_Screen* screen = CPG_MainScreen_Init(display);
 
     while (screen->code != CPG_QUIT) {
