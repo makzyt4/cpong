@@ -7,7 +7,8 @@ LDFLAGS=-lSDL2
 default: all
 
 all:
+	mkdir -p bin
 	$(CC) $(LDFLAGS) $(CFLAGS) $(SOURCES) -o $(TARGET)
 
 clean:
-	rm $(TARGET)
+	rm -rf bin/
