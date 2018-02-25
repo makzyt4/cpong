@@ -2,7 +2,7 @@
 #include "../include/main_screen.h"
 #include "../include/text.h"
 
-#define MENUS_FONT_SIZE 3
+#define CPG_MENUS_FONT_SIZE 3
 
 int8_t selectionIndex = 0;
 
@@ -12,17 +12,17 @@ void CPG_MainScreen_Loop(CPG_Screen* screen) {
             "New game", 
             CPG_SCREEN_WIDTH / 2 - 96, 
             CPG_SCREEN_HEIGHT / 2 - 64,
-            MENUS_FONT_SIZE},
+            CPG_MENUS_FONT_SIZE},
         (CPG_Text){
             "Options", 
             CPG_SCREEN_WIDTH / 2 - 96, 
             CPG_SCREEN_HEIGHT / 2 - 34,
-            MENUS_FONT_SIZE},
+            CPG_MENUS_FONT_SIZE},
         (CPG_Text){
             "Quit", 
             CPG_SCREEN_WIDTH / 2 - 96, 
             CPG_SCREEN_HEIGHT / 2 - 4,
-            MENUS_FONT_SIZE}
+            CPG_MENUS_FONT_SIZE}
     };
     const uint8_t MENUS_SIZE = sizeof(menus) / sizeof(menus[0]);
 
@@ -50,6 +50,9 @@ void CPG_MainScreen_Loop(CPG_Screen* screen) {
                         switch (selectionIndex) {
                             case 0:
                                 screen->code = CPG_GAME;
+                                break;
+                            case 1:
+                                screen->code = CPG_OPTIONS;
                                 break;
                             case 2:
                                 screen->code = CPG_QUIT;

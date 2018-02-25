@@ -1,5 +1,5 @@
-#ifndef TEXT_H
-#define TEXT_H
+#ifndef CPG_TEXT_H
+#define CPG_TEXT_H
 
 #include <stdint.h>
 #include <SDL2/SDL.h>
@@ -12,4 +12,4 @@ typedef struct {
 
 void CPG_Text_Draw(CPG_Text* text, SDL_Renderer* renderer);
 
-#endif // TEXT_H
+#endif // CPG_TEXT_H

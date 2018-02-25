@@ -1,5 +1,5 @@
-#ifndef SCREEN_H
-#define SCREEN_H
+#ifndef CPG_SCREEN_H
+#define CPG_SCREEN_H
 
 #include "display.h"
 
@@ -22,4 +22,4 @@ CPG_Screen* CPG_Screen_Init(
         void (*loop)(struct CPG_Screen*));
 void CPG_Screen_RunLoop(CPG_Screen* self);
 
-#endif // SCREEN_H
+#endif // CPG_SCREEN_H

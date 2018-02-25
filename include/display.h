@@ -1,5 +1,5 @@
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#ifndef CPG_DISPLAY_H
+#define CPG_DISPLAY_H
 
 #include <SDL2/SDL.h>
 #include <stdint.h>
@@ -9,6 +9,7 @@
 #define CPG_SCREEN_WIDTH  800
 #define CPG_SCREEN_HEIGHT 600
 #define CPG_SCREEN_TITLE  "C Pong"
+#define CPG_UI_SIZE 50
 
 typedef struct {
    SDL_Window* window;
@@ -23,4 +24,4 @@ void CPG_Display_DrawText(CPG_Display* self, CPG_Text* text);
 void CPG_Display_Refresh(CPG_Display* self);
 void CPG_Display_SetColor(CPG_Display* self, CPG_Color color);
 
-#endif // DISPLAY_H
+#endif // CPG_DISPLAY_H

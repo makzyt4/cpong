@@ -1,8 +1,24 @@
 #include "../include/color.h"
 #include "../include/main_screen.h"
 #include "../include/text.h"
+#include "../include/pad.h"
 
-#define MENUS_FONT_SIZE 3
+CPG_Pad padPlayer1 =  {
+    50, 
+    (CPG_UI_SIZE + CPG_SCREEN_HEIGHT - CPG_PAD_HEIGHT) / 2, 
+    SDLK_w, 
+    SDLK_s,
+    SDL_FALSE,
+    0.0f
+};
+CPG_Pad padPlayer2 =  {
+    CPG_SCREEN_WIDTH - 50 - CPG_PAD_WIDTH, 
+    (CPG_UI_SIZE + CPG_SCREEN_HEIGHT - CPG_PAD_HEIGHT) / 2, 
+    SDLK_UP, 
+    SDLK_DOWN,
+    SDL_FALSE,
+    0.0f
+};
 
 void CPG_GameScreen_Loop(CPG_Screen* screen) {
     SDL_Event event;
@@ -13,16 +29,19 @@ void CPG_GameScreen_Loop(CPG_Screen* screen) {
                 screen->code = CPG_QUIT;
                 return;
         }
+
+        CPG_Pad_HandleKeys(&padPlayer1, &event);
+        CPG_Pad_HandleKeys(&padPlayer2, &event);
     }
-
-    CPG_Text t = {"Text", 50, 50, 1};
-    SDL_Rect r = {50, 50, 50, 50};
-
+    
     CPG_Display_Clear(screen->display, CPG_BLACK);
-    CPG_Display_SetColor(screen->display, CPG_RED);
-    CPG_Display_DrawRect(screen->display, &r);
-    CPG_Display_SetColor(screen->display, CPG_WHITE);
-    CPG_Display_DrawText(screen->display, &t);
+
+    CPG_Pad_Draw(&padPlayer1, screen->display);
+    CPG_Pad_Draw(&padPlayer2, screen->display);
+
+    CPG_Pad_Move(&padPlayer1);
+    CPG_Pad_Move(&padPlayer2);
+
     CPG_Display_Refresh(screen->display);
     SDL_Delay(16);
 }

@@ -1,5 +1,5 @@
-#ifndef COLOR_H
-#define COLOR_H
+#ifndef CPG_COLOR_H
+#define CPG_COLOR_H
 
 #include <stdint.h>
 
@@ -24,4 +24,4 @@ extern CPG_Color CPG_FUCHSIA;
 extern CPG_Color CPG_YELLOW;
 extern CPG_Color CPG_WHITE;
 
-#endif // COLOR_H
+#endif // CPG_COLOR_H
