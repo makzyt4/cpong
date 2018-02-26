@@ -55,7 +55,7 @@ void CPG_Ball_Move(CPG_Ball* self) {
 
 void CPG_Ball_Reset(CPG_Ball* self) {
     self->x = (CPG_SCREEN_WIDTH - CPG_BALL_SIZE) / 2.0f;
-    self->y = (CPG_SCREEN_HEIGHT - CPG_BALL_SIZE) / 2.0f;
+    self->y = (CPG_SCREEN_HEIGHT + CPG_UI_SIZE - CPG_BALL_SIZE) / 2.0f;
 
     self->velocityX = (((rand() % 2) * 2) - 1) * CPG_BALL_STARTSPEED;
     self->velocityY = (((rand() % 201) - 100) / 100.f) * CPG_BALL_VERTSPEEDMAX;

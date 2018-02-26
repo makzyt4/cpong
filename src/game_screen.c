@@ -1,17 +1,55 @@
+#include "../include/game_screen.h"
 #include "../include/color.h"
 #include "../include/main_screen.h"
 #include "../include/text.h"
 #include "../include/pad.h"
 #include "../include/ball.h"
 #include "../include/star.h"
+#include <time.h>
 
-#define CPG_STAR_NUMBER 300
+uint8_t score;
+struct timespec start;
+struct timespec now;
 
-uint8_t scoreLeft, scoreRight;
 CPG_Pad padPlayer1;
 CPG_Pad padPlayer2;
+
 CPG_Ball ball;
 CPG_Star stars[CPG_STAR_NUMBER];
+CPG_GameState state;
+
+uint8_t CPG_GameScreen_ScoreLeft() {
+    return score >> 4;
+}
+
+uint8_t CPG_GameScreen_ScoreRight() {
+    return score & 0x0f;
+}
+
+void CPG_GameScreen_AddScoreLeft() {
+    uint8_t sc = CPG_GameScreen_ScoreLeft();
+    score &= 0x0f;
+    sc++;
+    score |= sc << 4;
+}
+
+void CPG_GameScreen_AddScoreRight() {
+    uint8_t sc = CPG_GameScreen_ScoreRight();
+    score &= 0xf0;
+    sc++;
+    score |= sc;
+}
+
+void CPG_GameScreen_DrawBallLine(CPG_Display* display) {
+    CPG_Display_SetColor(display, CPG_YELLOW);
+    CPG_Display_DrawLine(
+            display,
+            ball.x + CPG_BALL_SIZE / 2,
+            ball.y + CPG_BALL_SIZE / 2,
+            ball.x + CPG_BALL_SIZE / 2 + ball.velocityX * 15.0f,
+            ball.y + CPG_BALL_SIZE / 2 + ball.velocityY * 15.0f
+    );
+}
 
 void CPG_GameScreen_DrawUiBar(CPG_Display* display) {
     CPG_Display_SetColor(display, CPG_WHITE);
@@ -24,12 +62,7 @@ void CPG_GameScreen_DrawDashedLine(CPG_Display* display) {
 
     int y;
     for (y = CPG_UI_SIZE; y < CPG_SCREEN_HEIGHT; y += 20) {
-        SDL_Rect rect = {
-            (CPG_SCREEN_WIDTH - 10) / 2,
-            y,
-            10,
-            10
-        };
+        SDL_Rect rect = { (CPG_SCREEN_WIDTH - 10) / 2, y, 10, 10 };
         CPG_Display_DrawRect(display, &rect);
     }
 }
@@ -51,27 +84,41 @@ void CPG_GameScreen_ResetPads() {
     };
 }
 
+void CPG_GameScreen_Reset() {
+    CPG_Ball_Reset(&ball);
+    CPG_GameScreen_ResetPads();
+    clock_gettime(CLOCK_MONOTONIC, &start);
+    state = CPG_STATE_COUNTING;
+}
+
 void CPG_GameScreen_Score() {
     if (ball.x > CPG_SCREEN_WIDTH) {
-        scoreLeft++;
-        CPG_Ball_Reset(&ball);
+        CPG_GameScreen_AddScoreLeft();
+        CPG_GameScreen_Reset();
     } else if (ball.x + CPG_BALL_SIZE < 0) {
-        scoreRight++;
-        CPG_Ball_Reset(&ball);
+        CPG_GameScreen_AddScoreRight();
+        CPG_GameScreen_Reset();
+    }
+
+    const uint8_t sc1 = CPG_GameScreen_ScoreLeft();
+    const uint8_t sc2 = CPG_GameScreen_ScoreRight();
+
+    if (sc1 == CPG_WIN_POINTS || sc2 == CPG_WIN_POINTS) {
+        state = CPG_STATE_GAMEOVER;
     }
 }
 
 void CPG_GameScreen_DrawScore(CPG_Display* display) {
-    char bufferL[16];
-    sprintf(bufferL, "%02d", scoreLeft);
+    char bufferL[4];
+    sprintf(bufferL, "%02d", CPG_GameScreen_ScoreLeft());
     CPG_Text scoreTextLeft = {
         bufferL,
         100, 20, 
         CPG_SCOREFONT_SIZE
     };
 
-    char bufferR[16];
-    sprintf(bufferR, "%02d", scoreRight);
+    char bufferR[4];
+    sprintf(bufferR, "%02d", CPG_GameScreen_ScoreRight());
     CPG_Text scoreTextRight = {
         bufferR,
         CPG_SCREEN_WIDTH - 100 - CPG_SCOREFONT_SIZE * 16, 20, 
@@ -84,6 +131,9 @@ void CPG_GameScreen_DrawScore(CPG_Display* display) {
 }
 
 void CPG_GameScreen_Loop(CPG_Screen* screen) {
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    long elapsedTime = now.tv_sec - start.tv_sec;
+
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {
@@ -110,6 +160,10 @@ void CPG_GameScreen_Loop(CPG_Screen* screen) {
         CPG_Star_Draw(&stars[i], screen->display);
     }
 
+    if (state == CPG_STATE_COUNTING) {
+        CPG_GameScreen_DrawBallLine(screen->display);
+    }
+
     CPG_GameScreen_DrawUiBar(screen->display);
     CPG_GameScreen_DrawScore(screen->display);
     CPG_GameScreen_DrawDashedLine(screen->display);
@@ -118,24 +172,50 @@ void CPG_GameScreen_Loop(CPG_Screen* screen) {
     CPG_Pad_Draw(&padPlayer2, screen->display);
     CPG_Ball_Draw(&ball, screen->display);
 
-    if (!paused) {
+    if (state == CPG_STATE_PLAYING || state == CPG_STATE_COUNTING) {
+        CPG_Pad_Move(&padPlayer1);
+        CPG_Pad_Move(&padPlayer2);
+    }
+
+    if (state == CPG_STATE_PLAYING) {
         CPG_Ball_Collide(&ball, &padPlayer1);
         CPG_Ball_Collide(&ball, &padPlayer2);
 
-        CPG_Pad_Move(&padPlayer1);
-        CPG_Pad_Move(&padPlayer2);
         CPG_Ball_Move(&ball);
 
         CPG_GameScreen_Score();
+    } else if (state == CPG_STATE_GAMEOVER) {
+        const uint8_t result = CPG_GameScreen_ScoreLeft() == CPG_WIN_POINTS;
+        CPG_Color color = result ? CPG_BLUE : CPG_RED;
+        CPG_Text gameoverText = {
+            result ? "Player 1 wins" : "Player 2 wins",
+            (CPG_SCREEN_WIDTH - 13 * 3 * 8) / 2, 
+            (CPG_SCREEN_HEIGHT - 20) / 2, 
+            3
+        };
+
+        CPG_Display_SetColor(screen->display, color);
+        CPG_Display_DrawText(screen->display, &gameoverText);
+    } else if (state == CPG_STATE_COUNTING) {
+        char countBuffer[5];
+        sprintf(countBuffer, "%1ld...", CPG_START_TIME - elapsedTime);
+        CPG_Text counterText = {
+            countBuffer,
+            (CPG_SCREEN_WIDTH - 4 * 3 * 8) / 2, 
+            (CPG_SCREEN_HEIGHT - 20) / 2, 
+            3
+        };
+
+        CPG_Display_SetColor(screen->display, CPG_SILVER);
+        CPG_Display_DrawText(screen->display, &counterText);
+
+        if (CPG_START_TIME - elapsedTime == 0) {
+            state = CPG_STATE_PLAYING;
+        }
     }
 
     CPG_Display_Refresh(screen->display);
     SDL_Delay(16);
-}
-
-void CPG_GameScreen_Reset() {
-    CPG_Ball_Reset(&ball);
-    CPG_GameScreen_ResetPads();
 }
 
 CPG_Screen* CPG_GameScreen_Init(CPG_Display* display) {
@@ -144,8 +224,8 @@ CPG_Screen* CPG_GameScreen_Init(CPG_Display* display) {
         CPG_Star_Init(&stars[i]);
     }
 
-    scoreLeft = 0;
-    scoreRight = 0;
+    score = 0;
+
     CPG_GameScreen_Reset();
     
     return CPG_Screen_Init(display, CPG_GameScreen_Loop);
