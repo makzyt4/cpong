@@ -61,6 +61,6 @@ void CPG_Ball_Reset(CPG_Ball* self) {
     self->x = (CPG_SCREEN_WIDTH - CPG_BALL_SIZE) / 2.0f;
     self->y = (CPG_SCREEN_HEIGHT - CPG_BALL_SIZE) / 2.0f;
 
-    self->velocityX = (((rand() % 101) - 200) / 100.f) * CPG_BALL_STARTSPEED;
-    self->velocityY = (((rand() % 101) - 200) / 100.f) * CPG_BALL_VERTSPEEDMAX;
+    self->velocityX = CPG_BALL_STARTSPEED;
+    self->velocityY = (((rand() % 201) - 100) / 100.f) * CPG_BALL_VERTSPEEDMAX;
 }

@@ -9,7 +9,7 @@
 #define CPG_SCREEN_WIDTH  800
 #define CPG_SCREEN_HEIGHT 600
 #define CPG_SCREEN_TITLE  "C Pong"
-#define CPG_UI_SIZE 50
+#define CPG_UI_SIZE 90
 
 typedef struct {
    SDL_Window* window;

@@ -1,5 +1,6 @@
 #include "../include/screen.h"
 #include "../include/game_screen.h"
+#include "../include/main_screen.h"
 
 CPG_Screen* CPG_Screen_Init(
         CPG_Display* display, 
@@ -20,8 +21,14 @@ void CPG_Screen_Update(CPG_Screen* self) {
 }
 
 void CPG_Screen_HandleExitCode(CPG_Screen* self) {
+    CPG_Screen* newScreen;
+
     if (self->code == CPG_GAME) {
-        CPG_Screen* newScreen = CPG_GameScreen_Init(self->display);
+        newScreen = CPG_GameScreen_Init(self->display);
+        self->loop = newScreen->loop;
+        self->code = CPG_LOOP;
+    } else if (self->code == CPG_MAIN_MENU) {
+        newScreen = CPG_MainScreen_Init(self->display);
         self->loop = newScreen->loop;
         self->code = CPG_LOOP;
     }

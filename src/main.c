@@ -1,9 +1,12 @@
 #include <SDL2/SDL.h>
+#include <time.h>
 #include "../include/display.h"
 #include "../include/text.h"
 #include "../include/main_screen.h"
 
 int main() {
+    srand(time(NULL));
+
     CPG_Display* display = CPG_Display_Init(
             CPG_SCREEN_WIDTH, 
             CPG_SCREEN_HEIGHT, 

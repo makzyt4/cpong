@@ -46,8 +46,8 @@ void CPG_Pad_Move(CPG_Pad* self) {
 
     self->y += self->velocityY;
 
-    if (self->y < 0) {
-        self->y = 0;
+    if (self->y < CPG_UI_SIZE) {
+        self->y = CPG_UI_SIZE;
         self->velocityY *= CPG_PAD_COLLISION_BRAKE;
     } else if (self->y + CPG_PAD_HEIGHT > CPG_SCREEN_HEIGHT) {
         self->y = CPG_SCREEN_HEIGHT - CPG_PAD_HEIGHT;
