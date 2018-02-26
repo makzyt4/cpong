@@ -5,6 +5,12 @@
 int8_t selectionIndex = 0;
 
 void CPG_MainScreen_Loop(CPG_Screen* screen) {
+    CPG_Text logo = {
+        "C Pong",
+        CPG_SCREEN_WIDTH / 2 - 186, 
+        CPG_SCREEN_HEIGHT / 2 - 164,
+        CPG_LOGO_SIZE
+    };
     CPG_Text menus[] = {
         (CPG_Text){
             "New game", 
@@ -62,6 +68,8 @@ void CPG_MainScreen_Loop(CPG_Screen* screen) {
     }
 
     CPG_Display_Clear(screen->display, CPG_BLACK);
+    CPG_Display_SetColor(screen->display, CPG_SILVER);
+    CPG_Display_DrawText(screen->display, &logo);
 
     uint8_t i;
     for (i = 0; i < MENUS_SIZE; i++) {

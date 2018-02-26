@@ -5,6 +5,7 @@
 
 #define CPG_MENUS_FONTSIZE 3
 #define CPG_SCOREFONT_SIZE 5
+#define CPG_LOGO_SIZE      7
 
 typedef enum {
     CPG_LOOP,
