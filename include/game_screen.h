@@ -1,6 +1,7 @@
 #ifndef CPG_GAME_SCREEN_H
 #define CPG_GAME_SCREEN_H
 
+#include <stdlib.h>
 #include "display.h"
 #include "pad.h"
 #include "screen.h"

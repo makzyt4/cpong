@@ -26,10 +26,12 @@ void CPG_Ball_Collide(CPG_Ball* self, CPG_Pad* pad) {
         self->velocityX *= -1;
         self->velocityY = verticalVelocity * -CPG_BALL_VERTSPEEDMAX;
 
+        /*
         if (((self->velocityY > 0) && (flags & 0x10))
                 || ((self->velocityY < 0) && (flags & 0x20))) {
             self->velocityY *= -1;
         }
+        */
     }
 }
 
@@ -61,6 +63,6 @@ void CPG_Ball_Reset(CPG_Ball* self) {
     self->x = (CPG_SCREEN_WIDTH - CPG_BALL_SIZE) / 2.0f;
     self->y = (CPG_SCREEN_HEIGHT - CPG_BALL_SIZE) / 2.0f;
 
-    self->velocityX = CPG_BALL_STARTSPEED;
+    self->velocityX = (((rand() % 2) * 2) - 1) * CPG_BALL_STARTSPEED;
     self->velocityY = (((rand() % 201) - 100) / 100.f) * CPG_BALL_VERTSPEEDMAX;
 }

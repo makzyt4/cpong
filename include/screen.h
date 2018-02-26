@@ -3,6 +3,9 @@
 
 #include "display.h"
 
+#define CPG_MENUS_FONTSIZE 3
+#define CPG_SCOREFONT_SIZE 5
+
 typedef enum {
     CPG_LOOP,
     CPG_MAIN_MENU,
