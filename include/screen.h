@@ -10,7 +10,7 @@
 typedef enum {
     CPG_LOOP,
     CPG_MAIN_MENU,
-    CPG_OPTIONS,
+    CPG_HELP,
     CPG_GAME,
     CPG_QUIT
 } CPG_ExitCode;

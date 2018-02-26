@@ -18,7 +18,7 @@ void CPG_MainScreen_Loop(CPG_Screen* screen) {
             CPG_SCREEN_HEIGHT / 2 - 64,
             CPG_MENUS_FONTSIZE},
         (CPG_Text){
-            "Options", 
+            "Help", 
             CPG_SCREEN_WIDTH / 2 - 96, 
             CPG_SCREEN_HEIGHT / 2 - 34,
             CPG_MENUS_FONTSIZE},
@@ -54,6 +54,9 @@ void CPG_MainScreen_Loop(CPG_Screen* screen) {
                         switch (selectionIndex) {
                             case 0:
                                 screen->code = CPG_GAME;
+                                break;
+                            case 1:
+                                screen->code = CPG_HELP;
                                 break;
                             case 2:
                                 screen->code = CPG_QUIT;
