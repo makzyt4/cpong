@@ -39,6 +39,10 @@ void CPG_Display_Destroy(CPG_Display* self) {
     free(self);
 }
 
+void CPG_Display_DrawLine(CPG_Display* self, int x1, int y1, int x2, int y2) {
+    SDL_RenderDrawLine(self->renderer, x1, y1, x2, y2);
+}
+
 void CPG_Display_DrawRect(CPG_Display* self, SDL_Rect* rect) {
     SDL_RenderFillRect(self->renderer, rect);
 }

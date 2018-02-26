@@ -18,6 +18,7 @@ extern CPG_Color CPG_MAROON;
 extern CPG_Color CPG_PURPLE;
 extern CPG_Color CPG_OLIVE;
 extern CPG_Color CPG_GRAY;
+extern CPG_Color CPG_DARKGRAY;
 extern CPG_Color CPG_SILVER;
 extern CPG_Color CPG_RED;
 extern CPG_Color CPG_FUCHSIA;

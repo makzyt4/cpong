@@ -20,18 +20,12 @@ void CPG_Ball_Collide(CPG_Ball* self, CPG_Pad* pad) {
     if ((flags & 0xf) == 0xf) {
         const float ballCenter = self->y + CPG_BALL_SIZE / 2.0f;
         const float padCenter = pad->y + CPG_PAD_HEIGHT / 2.0f;
-        const float verticalVelocity = (ballCenter - padCenter) / (CPG_PAD_HEIGHT / 2.0f);
+        const float verticalVelocity 
+            = (ballCenter - padCenter) / (CPG_PAD_HEIGHT / 2.0f);
 
         self->velocityX += sgn(self->velocityX) * CPG_BALL_SPEEDDELTA;
         self->velocityX *= -1;
-        self->velocityY = verticalVelocity * -CPG_BALL_VERTSPEEDMAX;
-
-        /*
-        if (((self->velocityY > 0) && (flags & 0x10))
-                || ((self->velocityY < 0) && (flags & 0x20))) {
-            self->velocityY *= -1;
-        }
-        */
+        self->velocityY = verticalVelocity * CPG_BALL_VERTSPEEDMAX;
     }
 }
 
