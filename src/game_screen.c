@@ -19,6 +19,21 @@ void CPG_GameScreen_DrawUiBar(CPG_Display* display) {
     CPG_Display_DrawRect(display, &rect);
 }
 
+void CPG_GameScreen_DrawDashedLine(CPG_Display* display) {
+    CPG_Display_SetColor(display, CPG_WHITE);
+
+    int y;
+    for (y = CPG_UI_SIZE; y < CPG_SCREEN_HEIGHT; y += 20) {
+        SDL_Rect rect = {
+            (CPG_SCREEN_WIDTH - 10) / 2,
+            y,
+            10,
+            10
+        };
+        CPG_Display_DrawRect(display, &rect);
+    }
+}
+
 void CPG_GameScreen_ResetPads() {
     padPlayer1 = (CPG_Pad) {
         50, 
@@ -48,7 +63,7 @@ void CPG_GameScreen_Score() {
 
 void CPG_GameScreen_DrawScore(CPG_Display* display) {
     char bufferL[16];
-    sprintf(bufferL, "%d", scoreLeft);
+    sprintf(bufferL, "%02d", scoreLeft);
     CPG_Text scoreTextLeft = {
         bufferL,
         100, 20, 
@@ -56,10 +71,10 @@ void CPG_GameScreen_DrawScore(CPG_Display* display) {
     };
 
     char bufferR[16];
-    sprintf(bufferR, "%d", scoreRight);
+    sprintf(bufferR, "%02d", scoreRight);
     CPG_Text scoreTextRight = {
         bufferR,
-        CPG_SCREEN_WIDTH - 100 - CPG_SCOREFONT_SIZE * 8, 20, 
+        CPG_SCREEN_WIDTH - 100 - CPG_SCOREFONT_SIZE * 16, 20, 
         CPG_SCOREFONT_SIZE 
     };
 
@@ -97,19 +112,22 @@ void CPG_GameScreen_Loop(CPG_Screen* screen) {
 
     CPG_GameScreen_DrawUiBar(screen->display);
     CPG_GameScreen_DrawScore(screen->display);
+    CPG_GameScreen_DrawDashedLine(screen->display);
 
     CPG_Pad_Draw(&padPlayer1, screen->display);
     CPG_Pad_Draw(&padPlayer2, screen->display);
     CPG_Ball_Draw(&ball, screen->display);
 
-    CPG_Ball_Collide(&ball, &padPlayer1);
-    CPG_Ball_Collide(&ball, &padPlayer2);
+    if (!paused) {
+        CPG_Ball_Collide(&ball, &padPlayer1);
+        CPG_Ball_Collide(&ball, &padPlayer2);
 
-    CPG_Pad_Move(&padPlayer1);
-    CPG_Pad_Move(&padPlayer2);
-    CPG_Ball_Move(&ball);
+        CPG_Pad_Move(&padPlayer1);
+        CPG_Pad_Move(&padPlayer2);
+        CPG_Ball_Move(&ball);
 
-    CPG_GameScreen_Score();
+        CPG_GameScreen_Score();
+    }
 
     CPG_Display_Refresh(screen->display);
     SDL_Delay(16);
